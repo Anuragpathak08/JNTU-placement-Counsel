@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Signup</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial;
+        background: #0f0f0f;
+        color: white;
+      }
+
+      .container {
+        width: 350px;
+        margin: 100px auto;
+        padding: 30px;
+        background: #1c1c1c;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+      }
+
+      h2 {
+        text-align: center;
+        color: orange;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+      }
+
+      input:focus {
+        outline: 2px solid orange;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background: orange;
+        border: none;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      button:hover {
+        background: #ff8c00;
+      }
+
+      a {
+        color: orange;
+        text-decoration: none;
+      }
+
+      .link {
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .error {
+        color: red;
+        text-align: center;
+      }
+
+      #rules {
+        list-style: none;
+        padding: 0;
+      }
+
+      #rules li {
+        color: red;
+      }
+
+      .good {
+        color: green !important;
+      }
+      #helperText {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Signup</h2>
+
+      {% for message in messages %}
+      <p class="error">{{ message }}</p>
+      {% endfor %}
+
+      <form class="signup" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="tel" name="phone_no" placeholder="Phone number" required />
+        <input
+          type="text"
+          name="first_name"
+          placeholder="first name"
+          required
+        />
+        <input type="text" name="last_name" placeholder="last name" required />
+        <input
+          id="pass"
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        <ul id="rules">
+          <li id="lower">✖ At least one lowercase</li>
+          <li id="upper">✖ At least one uppercase</li>
+          <li id="number">✖ At least one number</li>
+          <li id="special">✖ At least one special character</li>
+          <li id="length">✖ Minimum 8 characters</li>
+          <li id="space">✖ No spaces</li>
+        </ul>
+        <p style="display: none" class="error" id="m_pass"></p>
+        <input
+          id="conf_pass"
+          type="password"
+          name="confirm_pass"
+          placeholder="Confirm Password"
+          required
+        />
+        <p id="helperText"></p>
+        <button id="submit_btn" type="submit">Create Account</button>
+      </form>
+
+      <div class="link">
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+      </div>
+    </div>
+    {% comment %}
+    <script>
+      let helperText = document.getElementById("helperText");
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])[^\s]{8,}$/;
+      let signup = document.querySelector(".signup");
+      let pass = document.querySelector("#pass");
+      let conf_pass = document.querySelector("#conf_pass");
+      let submit_btn = document.getElementById("submit_btn");
+      let lower = document.querySelector("#lower");
+      let upper = document.querySelector("#upper");
+      let number = document.querySelector("#number");
+      let special = document.querySelector("#special");
+      let length = document.querySelector("#length");
+      let space = document.querySelector("#space");
+
+      pass.addEventListener("input", () => {
+        let value = pass.value;
+
+        // lowercase
+        if (/[a-z]/.test(value)) {
+          lower.textContent = "✔ At least one lowercase";
+          lower.classList.add("good");
+          // console.log(lower);
+        } else {
+          lower.textContent = "✖ At least one lowercase";
+          lower.classList.remove("good");
+        }
+
+        // uppercase
+        if (/[A-Z]/.test(value)) {
+          upper.textContent = "✔ At least one uppercase";
+          upper.classList.add("good");
+        } else {
+          upper.textContent = "✖ At least one uppercase";
+          upper.classList.remove("good");
+        }
+
+        // number
+        if (/\d/.test(value)) {
+          number.textContent = "✔ At least one number";
+          number.classList.add("good");
+        } else {
+          number.textContent = "✖ At least one number";
+          number.classList.remove("good");
+        }
+
+        // special char
+        if (/[^A-Za-z0-9]/.test(value)) {
+          special.textContent = "✔ At least one special character";
+          special.classList.add("good");
+        } else {
+          special.textContent = "✖ At least one special character";
+          special.classList.remove("good");
+        }
+
+        // length
+        if (value.length >= 8) {
+          length.textContent = "✔ Minimum 8 characters";
+          length.classList.add("good");
+        } else {
+          length.textContent = "✖ Minimum 8 characters";
+          length.classList.remove("good");
+        }
+
+        // no space
+        if (!/\s/.test(value)) {
+          space.textContent = "✔ No spaces";
+          space.classList.add("good");
+        } else {
+          space.textContent = "✖ No spaces";
+          space.classList.remove("good");
+        }
+      });
+
+      conf_pass.addEventListener("input", () => {
+        // console.log(pass.value, conf_pass.value);
+
+        if (pass.value == conf_pass.value) {
+          // console.log("matching");
+          helperText.innerHTML = "All is Well!!!";
+          helperText.style.color = "green";
+          submit_btn.disabled = false;
+        } else {
+          helperText.innerHTML = "confirm password is not matching!!!";
+          helperText.style.color = "red";
+          submit_btn.disabled = true;
+        }
+      });
+
+      signup.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (pass.value != conf_pass.value) {
+        } else {
+        }
+      });
+    </script>
+    {% endcomment %}
+  </body>
+</html>
