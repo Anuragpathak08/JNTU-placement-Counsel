@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Results for Test: {{ test.title }}</h2>
+<p>Date: {{ test.date }}</p>
+
+{% if attempts %}
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Full Name</th>
+      <th>Score</th>
+      <th>Total Questions</th>
+      <th>Percentage</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for attempt in attempts %}
+    <tr>
+      <td>{{ attempt.user.username }}</td>
+      <td>{{ attempt.user.get_full_name }}</td>
+      <td>{{ attempt.correct_answers }}</td>
+      <td>{{ attempt.total_questions }}</td>
+      <td>
+        {% widthratio attempt.correct_answers attempt.total_questions 100 %}%
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No one has attempted this test yet.</p>
+{% endif %}
+
+<a href="{% url 'dash-board' %}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock %}

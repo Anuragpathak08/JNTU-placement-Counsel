@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>{{ test.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for question in questions %}
+            <fieldset style="margin-bottom: 20px; border: 1px solid #333; padding: 15px; border-radius: 8px;">
+                <legend style="color: orange; font-weight: bold;">{{ question.question }}</legend>
+                <label>
+                    <input type="radio" name="q_{{ question.id }}" value="1" required> {{ question.option1 }}
+                </label><br>
+                <label>
+                    <input type="radio" name="q_{{ question.id }}" value="2"> {{ question.option2 }}
+                </label><br>
+                <label>
+                    <input type="radio" name="q_{{ question.id }}" value="3"> {{ question.option3 }}
+                </label><br>
+                <label>
+                    <input type="radio" name="q_{{ question.id }}" value="4"> {{ question.option4 }}
+                </label><br>
+            </fieldset>
+        {% empty %}
+            <p>No questions available for this test.</p>
+        {% endfor %}
+        <button type="submit">Submit Test</button>
+    </form>
+</div>
+{% endblock %}

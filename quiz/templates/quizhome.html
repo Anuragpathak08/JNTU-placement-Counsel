@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="max-width: 500px;">
+    <h2>Today's Test</h2>
+    {% if test %}
+        {% if already_attempted %}
+            <p class="text-center">You have already taken today's test.</p>
+            <p class="text-center">Your score: {{ attempt.correct_answers }}/{{ attempt.total_questions }}</p>
+        {% else %}
+            <div class="text-center">
+                <a href="{% url 'start_test' test.uuid %}" class="btn">Start Test</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <p class="text-center">No test scheduled for today.</p>
+    {% endif %}
+</div>
+{% endblock %}

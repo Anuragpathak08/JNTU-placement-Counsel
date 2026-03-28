@@ -77,7 +77,13 @@
 
       <form method="POST">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required />
+        <input
+          type="text"
+          id="Username"
+          name="Username"
+          placeholder="Username"
+          required
+        />
         <input
           type="password"
           name="password"

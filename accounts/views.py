@@ -1,15 +1,15 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-
+User = get_user_model()
 
 # Create your views here.
 def login_view(request):
     data = None
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('Username')
         pawd = request.POST.get('password')
         try:
             data = User.objects.get(username = username )
@@ -24,14 +24,14 @@ def login_view(request):
                 if user.is_staff:
                     return redirect('dash-board')
                 else:
-                    return redirect('quiz-start') 
+                    return redirect('quiz_home') 
             else:
                 messages.error(request, 'password is incorrect')
     return render(request, 'login.html')
 
 def logout_view(request):
-    logout(request.user)
-    return redirect('home')
+    logout(request)
+    return redirect('login')
 
 def signup_view(request):
     if request.method =='POST':
@@ -69,7 +69,5 @@ def signup_view(request):
         )
         user.save()
         return redirect('login')
-
-
 
     return render(request, 'signup.html')

@@ -21,9 +21,10 @@ from django.conf.urls.static import static
 from django.shortcuts import redirect
 
 urlpatterns = [
+    path('',lambda x : redirect('login')),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('written_tests/', include('written_tests.urls')),
     path('quiz/', include('quiz.urls')),
-    path('',lambda x : redirect('login'))
+    path('dash-board/', include('dash_board.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

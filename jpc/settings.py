@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'accounts',
     'quiz',
     'written_tests',
+    'dash_board',
 ]
 
 MIDDLEWARE = [

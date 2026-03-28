@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block content %}
+<h2>All Tests</h2>
+{% if tests %}
+<ul class="list-group">
+  {% for test in tests %}
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ test.title }} ({{ test.date }})
+    <a href="{% url 'test_results' test.id %}" class="btn btn-sm btn-primary"
+      >View Results</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No tests have been created yet.</p>
+{% endif %} {% endblock %}
